@@ -71,7 +71,7 @@ class NewPost(Handler):
       if blog_title and blog_entry:
           blog_post = Blog_DB(blog_title = blog_title, blog_entry = blog_entry)
           blog_post.put()
-      
+
           blog_id = str(blog_post.key().id())
           self.redirect("/blog/%s" % blog_id)
       else:        
@@ -104,9 +104,9 @@ class TestPage(FrontPage):
 
 app = webapp2.WSGIApplication([
     ('/blog', FrontPage),
-    ('/newpost', NewPost),
+    ('/blog/newpost', NewPost),
     ('/blog/(\d+)', PermaLink),
     ('/testpage', TestPage),
-    ('/signup', SignUpPage),
-    ('/welcome', WelcomeHandler)
+    ('/blog/signup', SignUpPage),
+    ('/blog/welcome', WelcomeHandler)
 ], debug=True)

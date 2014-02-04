@@ -79,7 +79,7 @@ class SignUpPage(Handler):
 
 
         if not user_error and not pass_error and not verify_error and not email_error:
-            self.redirect("/welcome?username=" + user_name)
+            self.redirect("/blog/welcome?username=" + user_name)
             
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>WELCOME HANDLER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
