@@ -103,7 +103,7 @@ class TestPage(FrontPage):
       self.render('testpage.html', entries = entries)
 
 app = webapp2.WSGIApplication([
-    ('/', FrontPage),
+    ('/blog', FrontPage),
     ('/newpost', NewPost),
     ('/blog/(\d+)', PermaLink),
     ('/testpage', TestPage),

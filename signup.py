@@ -7,7 +7,7 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
-form = 'signup.html'
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HANDLER TEMPLATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 class Handler(webapp2.RequestHandler):
@@ -44,11 +44,6 @@ def valid_email(email):
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Sign Up Page Handler <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 class SignUpPage(Handler):
-    def write_form(self, user_error="", pass_error="", verify_error="", email_error="", username=""):
-        self.response.out.write('signup.html' % {"user_error"  : user_error,
-                                                 "pass_error"  : pass_error,
-                                                  "verify_error": verify_error,
-                                                  "email_error" : email_error})
       
     def get(self):
         self.render('signup.html')
@@ -58,6 +53,7 @@ class SignUpPage(Handler):
         user_pass = self.request.get('password')
         user_verify = self.request.get('verify')
         user_email = self.request.get('email')
+
 
         user_error, pass_error, verify_error, email_error = "", "", "", ""
         
@@ -76,10 +72,10 @@ class SignUpPage(Handler):
         else:
             email_error = ""
         
-        self.write_form(user_error,
-                        pass_error,
-                        verify_error,
-                        email_error)
+        self.render('signup.html', user_error = user_error,
+                                   pass_error = pass_error,
+                                   verify_error = verify_error,
+                                   email_error = email_error)
 
 
         if not user_error and not pass_error and not verify_error and not email_error:
