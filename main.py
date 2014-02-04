@@ -76,7 +76,7 @@ class NewPost(Handler):
           self.redirect("/blog/%s" % blog_id)
       else:        
         error = 'We need both a Title and an Entry, Im Afraid'
-        self.render_front(blog_title, blog_entry, error)
+        self.render('newpost.html', blog_title = blog_title, blog_entry = blog_entry, error = error)
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>PERMA LINK PAGE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

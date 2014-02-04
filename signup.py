@@ -8,6 +8,23 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
 
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HASH DEFINITIONS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+def hash_str(s):
+    return hmac.new(SECRET, s).hexdigest()
+
+
+def make_secure_val(s):
+	return "%s,%s" % (s, has_str(s))
+
+def check_secure_val(h):
+	val - h.split(',')[0]
+	if h == make_secure_val(val):
+	  return val
+
+
+
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HANDLER TEMPLATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 class Handler(webapp2.RequestHandler):
@@ -43,10 +60,11 @@ def valid_email(email):
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Sign Up Page Handler <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-class SignUpPage(Handler):
-      
+class SignUpPage(Handler):      
     def get(self):
         self.render('signup.html')
+        
+        
         
     def post(self):
         user_name = self.request.get('username')
