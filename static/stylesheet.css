@@ -1,0 +1,31 @@
+body {
+    position: relative;
+    font-family: Helvetica;
+    font-size: 14px;
+
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    color: #333;
+}
+
+pre {
+    font-family: Helvetica;
+}
+
+.new-post-link a:hover {
+     text-decoration: none;
+     color: #989B9E;
+}
+
+.new-post-link a:link{
+     text-decoration: none;
+     font-family:Helvetica;
+     color: #424547;
+}
+
+.new-post-link a:visited{
+     text-decoration: none;
+     font-family:Helvetica;
+     color: #424547;
+}

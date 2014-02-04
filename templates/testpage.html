@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+
+   {% for post in entries %}
+      <div class="entry">
+        <label>
+          TITLE
+          <pre class="blog-title">{{post.blog_title}}</pre>
+        </label>
+        
+        <label>
+          ENTRY
+          <pre class="blog-body">{{post.blog_entry}}</pre>
+        </label>
+        
+        <label>
+          DATE
+          <pre class="blog-body">{{post.created}}</pre>
+        </label>
+        
+        <label>
+          ID
+          <pre class="post-id">{{post.key().id()}}</pre>
+      </div>
+      <hr>
+    {% endfor %}
+
+<html>

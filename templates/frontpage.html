@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet.css">
+    <title>Blog</title>
+  </head>
+  
+  <body>
+
+    <h1>BLOG</h1> 
+    
+    <div class="new-post-link">
+      <a href="http://davidnaftalin.appspot.com/newpost">New Post</a>
+    </div> 
+    
+    <hr> 
+    
+    {% for post in entries %}
+      <div>
+        <label>
+          <pre>{{post.blog_title}} | {{post.created}}</pre>
+        </label>
+        
+        <label>
+          <pre>{{post.blog_entry}}</pre>
+        </label>
+      </div>
+      <hr>
+    {% endfor %}
+    
+  </body>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet.css">
+    <title>Blog | New Post</title>
+  </head>
+  
+  <body>
+    
+    <h1>Blog | New Post</h1>    
+    <form method="post">
+    <hr>
+      
+        <label>
+          <div>Subject</div>
+          <input type="text" name="subject" value={{blog_title}}>
+        </label>
+      
+      
+        <label>
+          <div>Content</div>
+          <textarea name="content">{{blog_entry}}</textarea>
+        </label>
+
+      
+      <div class="error">{{error}}</div>
+      <input type="submit">
+    </form>
+    
+
+    
+      {% for post in entries %}
+        <div class="entry">
+          <div class="blog-title">{{post.blog_title}}</div>
+
+          <pre class="blog-body">{{post.blog_entry}}</pre>
+      {% endfor %}
+    
+  </body>
+</html>
