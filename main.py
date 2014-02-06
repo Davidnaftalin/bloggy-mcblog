@@ -2,7 +2,7 @@ import os
 import webapp2
 import jinja2
 
-from signup import WelcomeHandler, SignUpPage
+from signup import WelcomePage, LoginPage, SignUpPage, User_DB
 
 from google.appengine.ext import db
 
@@ -98,7 +98,7 @@ class PermaLink(Handler):
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>QUERY PAGE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class TestPage(FrontPage):
   def get(self):
-      entries = db.GqlQuery("SELECT * FROM Blog_DB WHERE __KEY__ = KEY(Blog_DB', 5910974510923776)")
+      entries = db.GqlQuery("SELECT * FROM User_DB")
       
       self.render('testpage.html', entries = entries)
 
@@ -108,5 +108,6 @@ app = webapp2.WSGIApplication([
     ('/blog/(\d+)', PermaLink),
     ('/testpage', TestPage),
     ('/blog/signup', SignUpPage),
-    ('/blog/welcome', WelcomeHandler)
+    ('/blog/welcome', WelcomePage),
+    ('/blog/login', LoginPage)
 ], debug=True)

@@ -1,31 +1,49 @@
+
+
 body {
-    position: relative;
-    font-family: Helvetica;
-    font-size: 14px;
-
-    width: 800px;
+    font-family:Helvetica, Arial, Verdana, sans-serif;
+    font-size: 15px;
+  
+    width:800px;
     margin: 0 auto;
-    padding: 10px;
-    color: #333;
+    padding:10px;
+    text-decoration: none;
 }
 
-pre {
-    font-family: Helvetica;
+h1 {
+    font-family:Helvetica, Arial, Verdana, sans-serif;
+    font-size: 45px;
+    color: #292E29;
+    text-decoration: none;
+    font-weight: none;
+    
+    display: inline;
+}  
+
+hr {
+    color: #292E29
 }
 
-.new-post-link a:hover {
-     text-decoration: none;
-     color: #989B9E;
+.h_block {
+  background-color: pink;
 }
 
-.new-post-link a:link{
-     text-decoration: none;
-     font-family:Helvetica;
-     color: #424547;
-}
+a:link{
+  display:inline;
+  float: right;
 
-.new-post-link a:visited{
-     text-decoration: none;
-     font-family:Helvetica;
-     color: #424547;
-}
+  font-family:Helvetica, Arial, Verdana, sans-serif;
+  font-size: 45px;
+  color: #498F83;
+  text-decoration: none;
+}   
+
+a:hover{
+  display:inline;
+  float: right;
+
+  font-family:Helvetica, Arial, Verdana, sans-serif;
+  font-size: 45px;
+  color: #16DEBC;
+  text-decoration: none;
+}   

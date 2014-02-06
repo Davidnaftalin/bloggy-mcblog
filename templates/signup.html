@@ -1,17 +1,22 @@
 <!DOCTYPE HTML>
 
 </html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet.css">
+    <title>Blog | Signup</title>
+  </head>
+
 
 <body>
-
-<form method="post">  
+  <form method="post">  
     <div>
       <h1>Sign Up Form</h1>
+      <hr>
       <table>
         <tr>
           <td align="right">Username<td>
           <td><input type="text" name="username"><td>
-          <td style="color: red">{{user_error}}</td>
+          <td style="color: red">{{user_error}}{{user_exist_error}}</td>
         </td></td></td></td></tr>
         <tr>
           <td align="right">Password<td>
@@ -32,8 +37,9 @@
       <br>
           <input type="submit">
     </div>
+
   
-</form>
+  </form>
 
 </body>
 
