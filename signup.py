@@ -7,6 +7,7 @@ import os
 import re
 import hmac
 
+
 from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -18,7 +19,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 class User_DB(db.Model):
       db_user_name = db.StringProperty(required=True) 
       db_user_pass = db.StringProperty(required = True)
-      db_user_email = db.StringProperty
+      db_user_email = db.StringProperty(required = False)
       db_date_created=db.DateTimeProperty(auto_now_add = True) 
       
 
@@ -34,7 +35,6 @@ def check_secure_val(h):
     val = h.split('|')[0]
     if h == make_secure_val(val):
       return val
-    return False
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>SALTING PROCEDURES<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 def make_salt():
@@ -90,10 +90,8 @@ def valid_email(email):
 
 class SignUpPage(BlogHandler):      
     def get(self):
+        q = db.GqlQuery("SELECT * FROM User_DB")      
         self.render('signup.html')
-#        self.write(check_secure_val('Bob|0cad8e636d2357b0bec1b62fc54d23fc'))
-#        self.write(self.request.cookies.get('user_id'))
-
 
     def post(self):
         user_name = self.request.get('username')
@@ -106,7 +104,6 @@ class SignUpPage(BlogHandler):
         
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>COOKIE VALIDATION<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         user_id = str(make_secure_val(user_name))   
-#        self.response.headers.add_header('Set-Cookie', 'user_id=%s' % user_id)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      
 
@@ -115,12 +112,6 @@ class SignUpPage(BlogHandler):
         if not valid_username(user_name):
             user_error = 'Invalid Username'
 
-        elif not self.request.cookies.get('user_cookie_id'):
-            self.response.headers.add_header('Set-Cookie', 'user_cookie_id=%s' % user_id)
-            
-        elif check_secure_val(self.request.cookies.get('user_cookie_id')) == False:
-            self.redirect('http://www.google.com')
-#        elif check_user_log('user_id') != 
 
         if  not valid_password(user_pass):
             pass_error = 'Invalid Password'
@@ -128,11 +119,24 @@ class SignUpPage(BlogHandler):
         elif user_pass != user_verify:
             verify_error = "Passwords Don't Match"
 
+            
         if user_email:
             if not valid_email(user_email):  
                 email_error = 'Invalid Email'
         else:
             email_error = ""
+            
+        
+        if not self.request.cookies.get('user_cookie_id'):
+            self.response.headers.add_header('Set-Cookie', 'user_cookie_id=%s' % user_id)            
+        else:
+            if not check_secure_val(self.request.cookies.get('user_cookie_id')):
+                user_error = 'Invalid Cookie'
+            if check_secure_val(self.request.cookies.get('user_cookie_id')) == user_name:
+                user_error = "You're already logged in"
+            else:
+                self.response.headers.add_header('Set-Cookie', 'user_cookie_id=%s' % user_id)
+
         
         self.render('signup.html', user_error = user_error,
                                    pass_error = pass_error,
@@ -163,20 +167,26 @@ class LoginPage(BlogHandler):
         
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>COOKIE VALIDATION<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         user_id = str(make_secure_val(user_name))        
-        self.response.headers.add_header('Set-Cookie', 'user_id=%s' % user_id)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-        login_error, user_exist_error = "", ""
+        login_error = ""
         
         if not valid_username(user_name) or not valid_password(user_pass):
             login_error = 'Invalid login' 
-          
-        if user_name == self.request.cookies.get('user_id'):
-            user_exist_error = 'You are already logged in'
+
+            
+        if not self.request.cookies.get('user_cookie_id'):
+            self.response.headers.add_header('Set-Cookie', 'user_cookie_id=%s' % user_id)            
+        else:
+            if not check_secure_val(self.request.cookies.get('user_cookie_id')):
+                login_error = 'Invalid Cookie'
+            if check_secure_val(self.request.cookies.get('user_cookie_id')) == user_name:
+                login_error = "You're already logged in"
+            else:
+                self.response.headers.add_header('Set-Cookie', 'user_cookie_id=%s' % user_id)
             
 
-        self.render('login.html', login_error = login_error,
-                                  user_exist_error = user_exist_error)
+        self.render('login.html', login_error = login_error)
 
 
     
@@ -184,7 +194,7 @@ class LoginPage(BlogHandler):
     
     
     
-        if not login_error and not user_exist_error:
+        if not login_error:
             self.redirect("/blog/welcome")
             
 
@@ -192,4 +202,4 @@ class LoginPage(BlogHandler):
             
 class WelcomePage(BlogHandler):
       def get(self):
-          self.response.out.write('Welcome, ')# + self.request.cookies.get('user_id'))
+          self.response.out.write('Welcome, ' + check_secure_val(self.request.cookies.get('user_cookie_id')))
