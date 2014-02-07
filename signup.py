@@ -85,6 +85,9 @@ EMAIL_RE = re.compile("^[\S]+@[\S]+\.[\S]+$")
 def valid_email(email):
     return EMAIL_RE.match(email)
 
+COOKIE_RE = re.compile(r'.+=;\s*Path=/')
+def valid_cookie(cookie):
+    return cookie and COOKIE_RE.match(cookie)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SIGN UP PAGE HANDLER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -176,7 +179,7 @@ class LoginPage(BlogHandler):
 
             
         if not self.request.cookies.get('user_cookie_id'):
-            self.response.headers.add_header('Set-Cookie', 'user_cookie_id=%s' % user_id)            
+            self.response.headers.add_header(']', 'user_cookie_id=%s' % user_id)            
         else:
             if not check_secure_val(self.request.cookies.get('user_cookie_id')):
                 login_error = 'Invalid Cookie'
@@ -196,10 +199,22 @@ class LoginPage(BlogHandler):
     
         if not login_error:
             self.redirect("/blog/welcome")
-            
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>LOG OUT<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+class LogoutPage(BlogHandler):
+  def get(self):
+      if self.request.cookies.get('user_cookie_id'):
+        self.response.headers.add_header('Set-Cookie', "user_cookie_id=; Path=/")
+        self.redirect("/blog/signup")
+      
+  
+  
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>WELCOME HANDLER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             
 class WelcomePage(BlogHandler):
       def get(self):
-          self.response.out.write('Welcome, ' + check_secure_val(self.request.cookies.get('user_cookie_id')))
+          if not self.request.cookies.get('user_cookie_id'):
+              self.redirect("/blog/signup")
+          else:
+              self.response.out.write('Welcome, ' + check_secure_val(self.request.cookies.get('user_cookie_id')))

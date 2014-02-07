@@ -2,7 +2,7 @@ import os
 import webapp2
 import jinja2
 
-from signup import WelcomePage, LoginPage, SignUpPage, User_DB
+from signup import WelcomePage, LoginPage, SignUpPage, User_DB, LogoutPage
 
 from google.appengine.ext import db
 
@@ -109,5 +109,6 @@ app = webapp2.WSGIApplication([
     ('/testpage', TestPage),
     ('/blog/signup', SignUpPage),
     ('/blog/welcome', WelcomePage),
-    ('/blog/login', LoginPage)
+    ('/blog/login', LoginPage),
+    ('/blog/logout', LogoutPage)
 ], debug=True)
